@@ -18,7 +18,7 @@ A virtual function a member function which is declared within base class and is 
 https://en.wikibooks.org/wiki/C%2B%2B_Programming/Classes/Abstract_Classes/Pure_Abstract_Classes
 
 # Notes:
-A postfix expression could of the following form “1 6 * 12 +”
+- A postfix expression could of the following form “1 6 * 12 +”
 - The in-order traversal of the expression tree would print 1 * 6 + 12
 - The output of this evaluated expression would be “18”
 - The postfix expression will contain only integer operands with the following
