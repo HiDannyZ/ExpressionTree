@@ -1,0 +1,3 @@
+The input is: 1 6 * 8 +
+The inorder traversal is: 1 * 6 + 8
+The output of the expression is: 14
