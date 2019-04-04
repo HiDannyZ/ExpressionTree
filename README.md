@@ -15,3 +15,4 @@ not use built-in types (C++ STL) for vector, stack, lists and trees.
 # Danny Ideas:
 
 A virtual function a member function which is declared within base class and is re-defined (Overriden) by derived class.
+https://en.wikibooks.org/wiki/C%2B%2B_Programming/Classes/Abstract_Classes/Pure_Abstract_Classes
