@@ -14,6 +14,24 @@ not use built-in types (C++ STL) for vector, stack, lists and trees.
 
 # Danny Ideas:
 
+Create A nodeStack class
+
+Create everything in p2.cpp
+
+
+1.) Push everything into a stack until you see a operator. Be sure to make everything into a node.
+2.) Then pop two times and link nodes with root as Operator and the two numbers as left and right child.
+
+3.) Push created Node into stack
+
+//Not sure if we can push a node to stack as Stack may not support that. Instead, we can probably just pass a pointer
+
+4.) Then start search again until end of string.
+
+5.) Repeat 1,2,3, setting Node as right child always. 
+
+We would use overloading to push node to stack
+
 A virtual function a member function which is declared within base class and is re-defined (Overriden) by derived class.
 https://en.wikibooks.org/wiki/C%2B%2B_Programming/Classes/Abstract_Classes/Pure_Abstract_Classes
 
