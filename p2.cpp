@@ -48,7 +48,7 @@ class LinkedListStack
 				//Since Cpp Doesn't have auto garbage collecter, we have to delete it ourselves.
 				delete topOfStack;
 
-				topOfStack = tempNode.next;
+				topOfStack = tempNode->next;
 
 				//Decrease Size of Stack
 				size--;
