@@ -76,7 +76,7 @@ struct Node {
 class DataStructure {
 public:
 
-	virtual void build(*char posfixList) {
+	virtual void build(char* posfixList) {
 
 	} = 0
 
@@ -89,7 +89,7 @@ class ExpressionTree : public DataStructure {
 
 public:
 	void build(string posfixList) {
-		print(posfixList);
+		cout << (posfixList);
 	}
 
 };
