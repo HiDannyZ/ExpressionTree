@@ -1,8 +1,11 @@
 #include <iostream>
 #include <string>
+#include <string.h>
 #include <fstream>
 #include <sstream>
 using namespace std;
+// Tokenizing a string using stringstream 
+#include <bits/stdc++.h> 
 
 
 struct Node {
@@ -71,42 +74,40 @@ private:
 
 class Interface{
 
-public:
-	virtual void build(char* posfixList) = 0;
-	//virtual int eval() = 0;
+	public:
+		virtual void build(string posfixList) = 0;
+		//virtual int eval() = 0;
 };
 
 class ExpressionTree : public Interface{
 
-public:
-	void build(string posfixList){
-		cout << "This is the Given Input" << posfixList << endl;
-		
-	    // Returns first token  
-	    char *token = strtok(str, " "); 
-	   
-	    // Keep printing tokens while one of the 
-	    // delimiters present in str[]. 
-	    while (token != NULL) 
-	    { 
-	        printf("%s\n", token); 
-	        token = strtok(NULL, " "); 
-	    } 
+	public:
+		void build(string posfixList){
+			cout << "This is the Given Input: " << posfixList << endl;
 
-	}
+
+		}
 
 };
 
-int main() {
+int main(int argc, char* argv[]) {
 	string input;
-	while (cin)
+	int type = atoi(argv[1]);
+	cout<<type;
+	while(cin)
 	{
 		// Here you would be reading the file line by line
 		getline(cin, input);
-		cout << "The input is: " << input;
-		Interface* Tree = new ExpressionTree();
-		Tree->build(input);
+		cout<<"The input is: "<<input << endl;
 
+		ExpressionTree Tree;
+
+		Interface *Base = &Tree;
+
+		Base->build(input);
+
+		//Interface* Tree = new ExpressionTree();
+		//Tree->build(input);
 		/*
 		Here evaluate the current line and printout the result
 		Using the class you implemented
@@ -114,4 +115,3 @@ int main() {
 	}
 	return 0;
 }
-
