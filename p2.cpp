@@ -4,8 +4,6 @@
 #include <fstream>
 #include <sstream>
 using namespace std;
-// Tokenizing a string using stringstream 
-#include <bits/stdc++.h> 
 
 
 struct Node {
@@ -28,7 +26,7 @@ class LinkedListStack
 
 public:
 	//Push to the top of stack
-	void push(char Value) {
+	void push(Node* Value) {
 
 		//Creates new Node and pushes it
 		Node* tempNode = new Node;
@@ -68,6 +66,8 @@ public:
 private:
 	Node* topOfStack;
 	int size;
+
+	friend class ExpressionTree;
 };
 
 
@@ -86,6 +86,33 @@ class ExpressionTree : public Interface{
 			cout << "This is the Given Input: " << posfixList << endl;
 
 
+			//Stack
+			LinkedListStack TheStack = new LinkedListStack();
+
+			char CharCopyOfStr[1024];
+			
+			strcpy(CharCopyOfStr, posfixList.c_str());
+
+			char* point;
+
+			point = strtok(CharCopyOfStr, " ");
+
+			while(point!= NULL){
+				cout << point << endl;
+
+				if((point == "+") || (point == "-") || (point == "*") || (point == "/")){
+					cout << "Hi" << endl;
+				}
+				else{
+					Node* newNode;
+					newNode->value = *point;
+					TheStack.push(newNode);
+				}
+
+
+				//Goes to next Character
+				point = strtok(NULL, " ");
+			}
 		}
 
 };
@@ -94,6 +121,10 @@ int main(int argc, char* argv[]) {
 	string input;
 	int type = atoi(argv[1]);
 	cout<<type;
+
+
+
+
 	while(cin)
 	{
 		// Here you would be reading the file line by line
