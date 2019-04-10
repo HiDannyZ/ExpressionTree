@@ -76,7 +76,7 @@ struct Node {
 class DataStructure {
 public:
 
-	virtual void build(*char posfix) {
+	virtual void build(*char posfixList) {
 
 	} = 0
 
@@ -88,8 +88,8 @@ public:
 class ExpressionTree: public DataStructure{
 
 public:
-	void build(char* posfix){
-		
+	void build(string posfixList){
+		print(posfixList);
 	}
 
 };
@@ -98,8 +98,8 @@ class LinkedListStack
 {
 	//Constructor
 	LinkedListStack() {
-		topOfStack = nullptr;
-		size = 0;
+		Node* topOfStack = nullptr;
+		int size = 0;
 	}
 	//Deconstructor
 	~LinkedListStack() {
@@ -113,8 +113,8 @@ public:
 		//Creates new Node and pushes it
 		Node* tempNode = new Node;
 
-		tempNode->data = Value;
-		tempNode->next = topOfStack;
+		tempNode->value = Value;
+		tempNode->left = topOfStack;
 
 		//New Top of Stack is this now
 		topOfStack = tempNode;
@@ -133,7 +133,7 @@ public:
 			//Since Cpp Doesn't have auto garbage collecter, we have to delete it ourselves.
 			delete topOfStack;
 
-			topOfStack = tempNode->next;
+			topOfStack = tempNode->left;
 
 			//Decrease Size of Stack
 			size--;
@@ -157,6 +157,9 @@ int main() {
 		// Here you would be reading the file line by line
 		getline(cin, input);
 		cout<<"The input is: "<<input;
+		DataStructure* Tree = new ExpressionTree();
+		Tree->build(input);
+
 		/*
 		Here evaluate the current line and printout the result
 		Using the class you implemented
