@@ -80,15 +80,15 @@ public:
 
 	} = 0
 
-	virtual int eval() {
+		virtual int eval() {
 
 	} = 0
 };
 
-class ExpressionTree: public DataStructure{
+class ExpressionTree : public DataStructure {
 
 public:
-	void build(string posfixList){
+	void build(string posfixList) {
 		print(posfixList);
 	}
 
@@ -152,11 +152,11 @@ private:
 
 int main() {
 	string input;
-	while(cin)
+	while (cin)
 	{
 		// Here you would be reading the file line by line
 		getline(cin, input);
-		cout<<"The input is: "<<input;
+		cout << "The input is: " << input;
 		DataStructure* Tree = new ExpressionTree();
 		Tree->build(input);
 
