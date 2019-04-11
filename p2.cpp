@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 using namespace std;
-
+#include <stdlib.h>
 
 struct Node {
 	char value;
