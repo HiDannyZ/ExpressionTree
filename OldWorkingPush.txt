@@ -12,30 +12,6 @@ struct Node {
 	Node* left;
 };
 
-<<<<<<< HEAD
-class DataStructure {
-public:
-
-	virtual void build(char* posfixList) {
-
-	} = 0
-
-		virtual int eval() {
-
-	} = 0
-};
-
-class ExpressionTree : public DataStructure {
-
-public:
-	void build(string posfixList) {
-		cout << (posfixList);
-	}
-
-};
-
-=======
->>>>>>> eac16a04e842ae1c33bdb5db397b91c0d1435c57
 class LinkedListStack
 {
 	//Constructor
@@ -50,12 +26,19 @@ class LinkedListStack
 
 public:
 	//Takes a Character and push in a Node with the Character as its value.
-	void push(Node* GivenNode) {
-
+	void push(char Value) {
 
 		//Creates new Node and pushes it
-		GivenNode->left = topOfStack;
+		Node* tempNode = new Node;
 
+		tempNode->value = Value;
+		tempNode->left = topOfStack;
+
+		//New Top of Stack is this now
+		topOfStack = tempNode;
+
+		//IS THIS CORRECT?
+		delete tempNode;
 
 		//Increment size of Stack
 		size++;
@@ -66,18 +49,16 @@ public:
 		//Checks that we don't pop on empty stack
 		if (topOfStack != NULL) {
 
-
 			Node* tempNode = topOfStack;
 
 			//Since Cpp Doesn't have auto garbage collecter, we have to delete it ourselves.
-			//delete topOfStack;
+			delete topOfStack;
 
 			topOfStack = tempNode->left;
 
 			//Decrease Size of Stack
 			size--;
 
-			cout << "From Popped"	 << endl;
 			return tempNode;
 		}
 		else {
@@ -120,9 +101,7 @@ class ExpressionTree : public Interface{
 			SplitedCharacter = strtok(CharCopyOfStr, " ");
 
 			while(SplitedCharacter!= NULL){
-
-
-				cout << "Before Operation: " << SplitedCharacter << endl;
+				cout << SplitedCharacter << endl;
 
 				if((*SplitedCharacter == '+') || (*SplitedCharacter == '-') || (*SplitedCharacter == '*') || (*SplitedCharacter == '/')){
 					cout << "Popped" << endl;
@@ -138,21 +117,10 @@ class ExpressionTree : public Interface{
 					rootNode->left = leftChildNode;
 
 					TheStack.push(rootNode);
-
-
-					cout << "OUT" << endl;
-					
-
-					delete(rootNode);
 				}
 				else{
+					TheStack.push(*SplitedCharacter);
 					cout << "Pushed!" << endl;
-					Node* tempNode = new Node;
-
-					tempNode->value = *SplitedCharacter;
-					TheStack.push(tempNode);
-
-					delete tempNode;
 				}
 
 
