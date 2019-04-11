@@ -92,7 +92,8 @@ class ExpressionTree : public Interface{
 			LinkedListStack TheStack;
 
 
-			//By Changing CharCopyOfStr[1024] to this one, There is no longer an error. Why?
+			//By Changing CharCopyOfStr[1024] to this one, There is no longer an error. Why? Was it because of Stackoverflow due to large allocation of size?
+			// Can I delete This Once I'm done with it then? Though, online says that Delete should only be used with New and char *, not just char. Thanks!
 			char CharCopyOfStr[100];
 			
 			strcpy(CharCopyOfStr, posfixList.c_str());
