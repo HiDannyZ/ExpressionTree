@@ -4,7 +4,6 @@
 #include <fstream>
 #include <sstream>
 using namespace std;
-#include <stdlib.h>
 
 struct Node {
 	char value;
@@ -12,6 +11,7 @@ struct Node {
 	Node* left;
 };
 
+//For use in Creating Tree
 class LinkedListStack
 {
 	//Constructor
@@ -24,50 +24,54 @@ class LinkedListStack
 		//delete topOfStack;
 	//}
 
-public:
-	//Takes a Character and push in a Node with the Character as its value.
-	void push(Node* GivenNode) {
+	public:
+		//Takes a Node and Pushes it into the stack
+		void push(Node* GivenNode) {
+			//Creates new Node and pushes it
+			GivenNode->left = topOfStack;
 
+			//Sets New Top of Stack as Most Recent Pushed in Node
+			topOfStack = GivenNode;
 
-		//Creates new Node and pushes it
-		GivenNode->left = topOfStack;
+			//Increment size of Stack
+			size++;
 
-
-		//Increment size of Stack
-		size++;
-
-	}
-	Node* pop() {
-
-		//Checks that we don't pop on empty stack
-		if (topOfStack != NULL) {
-
-
-			Node* tempNode = topOfStack;
-
-			//Since Cpp Doesn't have auto garbage collecter, we have to delete it ourselves.
-			//delete topOfStack;
-
-			topOfStack = tempNode->left;
-
-			//Decrease Size of Stack
-			size--;
-
-			cout << "From Popped"	 << endl;
-			return tempNode;
 		}
-		else {
-			cout << ("ERROR: TRYING TO POP EMPTY STACK")<< endl;
+		Node* pop() {
+
+			//Checks that we don't pop on empty stack
+
+			if (topOfStack != NULL) {
+
+				//topOfStack = topOfStack->left;
+				//return topOfStack;
+				Node* tempNode = new Node;
+
+				tempNode = topOfStack;
+
+				//Since Cpp Doesn't have auto garbage collecter, we have to delete it ourselves.
+				//delete topOfStack;
+
+				topOfStack = tempNode->left;
+
+				//Decrease Size of Stack
+				size--;
+
+				return tempNode;
+			}
+			else {
+				cout << ("ERROR: TRYING TO POP EMPTY STACK")<< endl;
+			}
+
+
 		}
+	private:
+		Node* topOfStack;
+		int size;
 
-	}
-private:
-	Node* topOfStack;
-	int size;
-
-	//Allows This Class to be used in Expression Tree
-	friend class ExpressionTree;
-};
+		//Allows This Class to be used in Expression Tree
+		friend class ExpressionTree;
+	};
 
 
 
@@ -87,7 +91,10 @@ class ExpressionTree : public Interface{
 			//Stack
 			LinkedListStack TheStack;
 
-			char CharCopyOfStr[1024];
+
+			//By Changing CharCopyOfStr[1024] to this one, There is no longer an error. Why? Was it because of Stackoverflow due to large allocation of size?
+			// Can I delete This Once I'm done with it then? Though, online says that Delete should only be used with New and char *, not just char. Thanks!
+			char CharCopyOfStr[100];
 			
 			strcpy(CharCopyOfStr, posfixList.c_str());
 
@@ -96,15 +103,18 @@ class ExpressionTree : public Interface{
 			SplitedCharacter = strtok(CharCopyOfStr, " ");
 
 			while(SplitedCharacter!= NULL){
-
-
-				cout << "Before Operation: " << SplitedCharacter << endl;
+				cout << SplitedCharacter << endl;
 
 				if((*SplitedCharacter == '+') || (*SplitedCharacter == '-') || (*SplitedCharacter == '*') || (*SplitedCharacter == '/')){
 					cout << "Popped" << endl;
 
 					Node* rightChildNode = TheStack.pop();
+
+					cout << "First Popped: " << rightChildNode->value << endl; 
+
 					Node* leftChildNode = TheStack.pop();
+
+					cout << "Second Popped: " << leftChildNode->value << endl; 
 
 					Node* rootNode = new Node;
 
@@ -115,10 +125,7 @@ class ExpressionTree : public Interface{
 
 					TheStack.push(rootNode);
 
-
 					cout << "OUT" << endl;
-					
-
 					delete(rootNode);
 				}
 				else{
@@ -140,8 +147,11 @@ class ExpressionTree : public Interface{
 
 int main(int argc, char* argv[]) {
 	string input;
-	int type = atoi(argv[1]);
-	cout<<type << endl;
+	if(argv[1] != NULL){
+		cout << "IN HERE";
+		int type = atoi(argv[1]);
+		cout<<type << endl;
+	}
 
 	while(cin)
 	{
