@@ -5,13 +5,13 @@
 #include <sstream>
 using namespace std;
 
-
 struct Node {
 	char value;
 	Node* right;
 	Node* left;
 };
 
+//For use in Creating Tree
 class LinkedListStack
 {
 	//Constructor
@@ -20,53 +20,58 @@ class LinkedListStack
 		int size = 0;
 	}
 	//Deconstructor
-	~LinkedListStack() {
-		delete topOfStack;
-	}
+	//~LinkedListStack() {
+		//delete topOfStack;
+	//}
 
-public:
-	//Push to the top of stack
-	void push(Node* Value) {
+	public:
+		//Takes a Node and Pushes it into the stack
+		void push(Node* GivenNode) {
+			//Creates new Node and pushes it
+			GivenNode->left = topOfStack;
 
-		//Creates new Node and pushes it
-		Node* tempNode = new Node;
+			//Sets New Top of Stack as Most Recent Pushed in Node
+			topOfStack = GivenNode;
 
-		tempNode->value = Value;
-		tempNode->left = topOfStack;
+			//Increment size of Stack
+			size++;
 
-		//New Top of Stack is this now
-		topOfStack = tempNode;
-
-		//Increment size of Stack
-		size++;
-
-	}
-	Node* pop() {
-
-		//Checks that we don't pop on empty stack
-		if (topOfStack != NULL) {
-
-			Node* tempNode = topOfStack;
-
-			//Since Cpp Doesn't have auto garbage collecter, we have to delete it ourselves.
-			delete topOfStack;
-
-			topOfStack = tempNode->left;
-
-			//Decrease Size of Stack
-			size--;
-
-			return tempNode;
 		}
-		else {
-			printf("ERROR: TRYING TO POP EMPTY STACK\n");
-		}
+		Node* pop() {
 
-	}
-private:
-	Node* topOfStack;
-	int size;
-};
+			//Checks that we don't pop on empty stack
+
+			if (topOfStack != NULL) {
+
+				//topOfStack = topOfStack->left;
+				//return topOfStack;
+				Node* tempNode = new Node;
+
+				tempNode = topOfStack;
+
+				//Since Cpp Doesn't have auto garbage collecter, we have to delete it ourselves.
+				//delete topOfStack;
+
+				topOfStack = tempNode->left;
+
+				//Decrease Size of Stack
+				size--;
+
+				return tempNode;
+			}
+			else {
+				cout << ("ERROR: TRYING TO POP EMPTY STACK")<< endl;
+			}
+
+
+		}
+	private:
+		Node* topOfStack;
+		int size;
+
+		//Allows This Class to be used in Expression Tree
+		friend class ExpressionTree;
+	};
 
 
 
@@ -83,60 +88,81 @@ class ExpressionTree : public Interface{
 		void build(string posfixList){
 			cout << "This is the Given Input: " << posfixList << endl;
 
-
 			//Stack
-			LinkedListStack TheStack = new LinkedListStack();
+			LinkedListStack TheStack;
 
-			char CharCopyOfStr[1024];
+
+			//By Changing CharCopyOfStr[1024] to this one, There is no longer an error. Why?
+			char CharCopyOfStr[100];
 			
 			strcpy(CharCopyOfStr, posfixList.c_str());
 
-			char* point;
+			char* SplitedCharacter;
 
-			point = strtok(CharCopyOfStr, " ");
+			SplitedCharacter = strtok(CharCopyOfStr, " ");
 
-			while(point!= NULL){
-				cout << point << endl;
+			while(SplitedCharacter!= NULL){
+				cout << SplitedCharacter << endl;
 
-				if((point == "+") || (point == "-") || (point == "*") || (point == "/")){
-					cout << "Hi" << endl;
+				if((*SplitedCharacter == '+') || (*SplitedCharacter == '-') || (*SplitedCharacter == '*') || (*SplitedCharacter == '/')){
+					cout << "Popped" << endl;
+
+					Node* rightChildNode = TheStack.pop();
+
+					cout << "First Popped: " << rightChildNode->value << endl; 
+
+					Node* leftChildNode = TheStack.pop();
+
+					cout << "Second Popped: " << leftChildNode->value << endl; 
+
+					Node* rootNode = new Node;
+
+					rootNode->value = *SplitedCharacter;
+
+					rootNode->right = rightChildNode;
+					rootNode->left = leftChildNode;
+
+					TheStack.push(rootNode);
+
+					cout << "OUT" << endl;
+					delete(rootNode);
 				}
 				else{
-					Node* newNode;
-					newNode->value = *point;
-					TheStack.push(newNode);
+					cout << "Pushed!" << endl;
+					Node* tempNode = new Node;
+
+					tempNode->value = *SplitedCharacter;
+					TheStack.push(tempNode);
+
+					delete tempNode;
 				}
 
 
 				//Goes to next Character
-				point = strtok(NULL, " ");
+				SplitedCharacter = strtok(NULL, " ");
 			}
 		}
-
 };
 
 int main(int argc, char* argv[]) {
 	string input;
-	int type = atoi(argv[1]);
-	cout<<type;
-
-
-
+	if(argv[1] != NULL){
+		cout << "IN HERE";
+		int type = atoi(argv[1]);
+		cout<<type << endl;
+	}
 
 	while(cin)
 	{
 		// Here you would be reading the file line by line
 		getline(cin, input);
-		cout<<"The input is: "<<input << endl;
+		cout<<"The input is: "<< input << endl;
 
 		ExpressionTree Tree;
 
 		Interface *Base = &Tree;
 
 		Base->build(input);
-
-		//Interface* Tree = new ExpressionTree();
-		//Tree->build(input);
 		/*
 		Here evaluate the current line and printout the result
 		Using the class you implemented
