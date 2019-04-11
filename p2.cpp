@@ -11,31 +11,6 @@ struct Node {
 	Node* right;
 	Node* left;
 };
-
-<<<<<<< HEAD
-class DataStructure {
-public:
-
-	virtual void build(char* posfixList) {
-
-	} = 0
-
-		virtual int eval() {
-
-	} = 0
-};
-
-class ExpressionTree : public DataStructure {
-
-public:
-	void build(string posfixList) {
-		cout << (posfixList);
-	}
-
-};
-
-=======
->>>>>>> eac16a04e842ae1c33bdb5db397b91c0d1435c57
 class LinkedListStack
 {
 	//Constructor
