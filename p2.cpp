@@ -3,6 +3,7 @@
 #include <string.h>
 #include <fstream>
 #include <sstream>
+#include <stdlib.h>
 using namespace std;
 
 
@@ -22,7 +23,7 @@ class LinkedListStack
 {
 	//Constructor
 	LinkedListStack() {
-		SNode* topOfStack = nullptr;
+		SNode* topOfStack = NULL;
 		int size = 0;
 	}
 	//Deconstructor
@@ -67,7 +68,7 @@ class LinkedListStack
 			}
 			else {
 				cout << ("ERROR: TRYING TO POP EMPTY STACK")<< endl;
-				return nullptr;
+				return NULL;
 			}
 
 
@@ -144,13 +145,14 @@ class ExpressionTree : public Interface{
 
 			return PostFixTree;
 		}
+
 		int eval(TNode* Tree) {
-			if (TNode == NULL){
+			if (Tree == NULL){
 				return 0;
 			}
 
 			if (Tree->left == NULL && Tree->right == NULL) {
-				return atoi(Tree->value);
+				return (int) Tree->value;
 			}
 
 			int leftVal = eval(Tree->left);
@@ -159,20 +161,19 @@ class ExpressionTree : public Interface{
 
 			// cout << Tree->value << " ";
 			
-			if (Tree->value == "+")
+			if ((Tree->value) == '+')
 				return leftVal + rightVal;
 			
-			if (Tree->value == "-")
+			if (Tree->value == '-')
 				return leftVal - rightVal;
 			
-			if (Tree->value == "*")
+			if (Tree->value == '*')
 				return leftVal * rightVal;
 
-			if (Tree->value == "/")
+			if (Tree->value == '/')
 				return leftVal / rightVal;
 			
 
-			
 		}
 };
 
