@@ -125,6 +125,9 @@ class ExpressionTree : public Interface{
 					rootNode->right = rightChildNode;
 					rootNode->left = leftChildNode;
 
+					cout << "From If, Pushed this root value in Stack: " << rootNode->value << endl;
+					cout << "The left and right is: " << rootNode->left->value << " " << rootNode->right->value << endl;
+
 					TheStack.push(rootNode);
 					
 
@@ -133,6 +136,8 @@ class ExpressionTree : public Interface{
 					TNode* tempNode = new TNode;
 
 					tempNode->value = *SplitedCharacter;
+
+					cout << "From Else Pushed this value in Stack: " << tempNode->value <<endl;
 					TheStack.push(tempNode);
 					
 				}
@@ -150,28 +155,43 @@ class ExpressionTree : public Interface{
 			if (Tree == NULL){
 				return 0;
 			}
+			cout << "BEFORE NULL" << endl;
 
-			if (Tree->left == NULL && Tree->right == NULL) {
-				return (int) Tree->value;
+			if (((Tree->left) == NULL) && ((Tree->right) == NULL)) {
+				cout << "TREE-> VALUE IS: " << (int)(Tree->value) << endl;
+
+				return ((int) Tree->value - ((int)48));
 			}
 
+			cout << "after Null" << endl;
+
+			cout << "Before leftVAl and next value is: " << Tree->left->value << endl;
 			int leftVal = eval(Tree->left);
 
 			int rightVal = eval(Tree->right);
 
 			// cout << Tree->value << " ";
 			
-			if ((Tree->value) == '+')
+			cout << "Left Val is : " << leftVal << " " << rightVal << endl;
+			if ((Tree->value) == '+'){
+				cout << "Left + Right: " << leftVal + rightVal << endl;
 				return leftVal + rightVal;
+			}
 			
-			if (Tree->value == '-')
+			if (Tree->value == '-'){
+				cout << "Left - Right: " << leftVal - rightVal << endl;
 				return leftVal - rightVal;
+			}
 			
-			if (Tree->value == '*')
+			if (Tree->value == '*'){
+				cout << "Left * Right: " << leftVal * rightVal << endl;
 				return leftVal * rightVal;
+			}
 
-			if (Tree->value == '/')
+			if (Tree->value == '/'){
+				cout << "Left / Right: " << leftVal / rightVal << endl;
 				return leftVal / rightVal;
+			}
 			
 
 		}
