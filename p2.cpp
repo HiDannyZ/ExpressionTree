@@ -6,16 +6,23 @@
 using namespace std;
 
 
-struct Node {
+struct TNode {
 	char value;
-	Node* right;
-	Node* left;
+	TNode* right;
+	TNode* left;
 };
+
+struct SNode {
+	SNode* next;
+	TNode* subTree;
+};
+
+//For use in Creating Tree
 class LinkedListStack
 {
 	//Constructor
 	LinkedListStack() {
-		Node* topOfStack = nullptr;
+		SNode* topOfStack = nullptr;
 		int size = 0;
 	}
 	//Deconstructor
@@ -23,70 +30,78 @@ class LinkedListStack
 		//delete topOfStack;
 	//}
 
-public:
-	//Takes a Character and push in a Node with the Character as its value.
-	void push(Node* GivenNode) {
+	public:
+		//Takes a Node and Pushes it into the stack
+		void push(TNode* GivenNode) {
+			//Creates new Node and pushes it
+			SNode* newNode = new SNode;
+			newNode->subTree = GivenNode;
+			newNode->next = topOfStack;
 
+			//Sets New Top of Stack as Most Recent Pushed in Node
+			topOfStack = newNode;
 
-		//Creates new Node and pushes it
-		GivenNode->left = topOfStack;
+			//Increment size of Stack
+			size++;
 
-
-		//Increment size of Stack
-		size++;
-
-	}
-	Node* pop() {
-
-		//Checks that we don't pop on empty stack
-		if (topOfStack != NULL) {
-
-
-			Node* tempNode = topOfStack;
-
-			//Since Cpp Doesn't have auto garbage collecter, we have to delete it ourselves.
-			//delete topOfStack;
-
-			topOfStack = tempNode->left;
-
-			//Decrease Size of Stack
-			size--;
-
-			cout << "From Popped"	 << endl;
-			return tempNode;
 		}
-		else {
-			cout << ("ERROR: TRYING TO POP EMPTY STACK")<< endl;
+		TNode* pop() {
+
+			//Checks that we don't pop on empty stack
+
+			if (topOfStack != NULL) {
+
+				//topOfStack = topOfStack->left;
+				//return topOfStack;
+				TNode* tempNode = topOfStack->subTree;
+				
+
+				//Since Cpp Doesn't have auto garbage collecter, we have to delete it ourselves.
+				//delete topOfStack;
+
+				topOfStack = topOfStack -> next;
+
+				//Decrease Size of Stack
+				size--;
+				return tempNode;
+			}
+			else {
+				cout << ("ERROR: TRYING TO POP EMPTY STACK")<< endl;
+				return nullptr;
+			}
+
+
 		}
+	private:
+		SNode* topOfStack;
+		int size;
 
-	}
-private:
-	Node* topOfStack;
-	int size;
-
-	//Allows This Class to be used in Expression Tree
-	friend class ExpressionTree;
-};
+		//Allows This Class to be used in Expression Tree
+		friend class ExpressionTree;
+	};
 
 
 
 class Interface{
 
 	public:
-		virtual void build(string posfixList) = 0;
-		//virtual int eval() = 0;
+		virtual TNode* build(string posfixList) = 0;
+		virtual int eval() = 0;
 };
 
 class ExpressionTree : public Interface{
 
 	public:
-		void build(string posfixList){
+		TNode* build(string posfixList){
 			cout << "This is the Given Input: " << posfixList << endl;
 
 			//Stack
 			LinkedListStack TheStack;
 
-			char CharCopyOfStr[1024];
+
+			//By Changing CharCopyOfStr[1024] to this one, There is no longer an error. Why? Was it because of Stackoverflow due to large allocation of size?
+			// Can I delete This Once I'm done with it then? Though, online says that Delete should only be used with New and char *, not just char. Thanks!
+			char CharCopyOfStr[posfixList.length()];
 			
 			strcpy(CharCopyOfStr, posfixList.c_str());
 
@@ -95,17 +110,16 @@ class ExpressionTree : public Interface{
 			SplitedCharacter = strtok(CharCopyOfStr, " ");
 
 			while(SplitedCharacter!= NULL){
-
-
-				cout << "Before Operation: " << SplitedCharacter << endl;
+				cout << SplitedCharacter << endl;
 
 				if((*SplitedCharacter == '+') || (*SplitedCharacter == '-') || (*SplitedCharacter == '*') || (*SplitedCharacter == '/')){
 					cout << "Popped" << endl;
 
-					Node* rightChildNode = TheStack.pop();
-					Node* leftChildNode = TheStack.pop();
+					TNode* rightChildNode = TheStack.pop();
 
-					Node* rootNode = new Node;
+					TNode* leftChildNode = TheStack.pop();
+
+					TNode* rootNode = new TNode;
 
 					rootNode->value = *SplitedCharacter;
 
@@ -113,27 +127,28 @@ class ExpressionTree : public Interface{
 					rootNode->left = leftChildNode;
 
 					TheStack.push(rootNode);
-
-
-					cout << "OUT" << endl;
 					
 
-					delete(rootNode);
 				}
 				else{
 					cout << "Pushed!" << endl;
-					Node* tempNode = new Node;
+					TNode* tempNode = new TNode;
 
 					tempNode->value = *SplitedCharacter;
 					TheStack.push(tempNode);
-
-					delete tempNode;
+					
 				}
-
 
 				//Goes to next Character
 				SplitedCharacter = strtok(NULL, " ");
 			}
+			TNode* PostFixTree;
+			PostFixTree = TheStack.pop();
+
+			return PostFixTree;
+		}
+		int eval() {
+			return 0;
 		}
 };
 
@@ -141,7 +156,6 @@ int main(int argc, char* argv[]) {
 	string input;
 	int type = atoi(argv[1]);
 	cout<<type << endl;
-
 	while(cin)
 	{
 		// Here you would be reading the file line by line
@@ -152,7 +166,9 @@ int main(int argc, char* argv[]) {
 
 		Interface *Base = &Tree;
 
-		Base->build(input);
+		TNode* Mytree= Base->build(input);
+
+		//delete(Mytree);
 		/*
 		Here evaluate the current line and printout the result
 		Using the class you implemented
