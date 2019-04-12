@@ -93,7 +93,7 @@ class ExpressionTree : public Interface{
 
 	public:
 		TNode* build(string posfixList){
-			//cout << "This is the Given Input: " << posfixList << endl;
+			//cout << "This is the Given Input: " << posfixLisst << endl;
 
 			//Stack
 			LinkedListStack TheStack;
@@ -145,17 +145,34 @@ class ExpressionTree : public Interface{
 			return PostFixTree;
 		}
 		int eval(TNode* Tree) {
+			if (TNode == NULL){
+				return 0;
+			}
+
 			if (Tree->left == NULL && Tree->right == NULL) {
 				return atoi(Tree->value);
 			}
 
-			eval(Tree->left);
+			int leftVal = eval(Tree->left);
 
-			eval(Tree->right);
+			int rightVal = eval(Tree->right);
 
-			cout << Tree->value << " ";
+			// cout << Tree->value << " ";
 			
-			return 0;
+			if (Tree->value == "+")
+				return leftVal + rightVal;
+			
+			if (Tree->value == "-")
+				return leftVal - rightVal;
+			
+			if (Tree->value == "*")
+				return leftVal * rightVal;
+
+			if (Tree->value == "/")
+				return leftVal / rightVal;
+			
+
+			
 		}
 };
 
@@ -163,10 +180,11 @@ int main(int argc, char* argv[]) {
 	string input;
 	int type = atoi(argv[1]);
 	cout<<type << endl;
-	while(cin)
+	//while(cin)
+	while(getline(cin, input))
 	{
 		// Here you would be reading the file line by line
-		getline(cin, input);
+		//getline(cin, input);
 		cout<<"The input is: "<< input << endl;
 
 		ExpressionTree Tree;
@@ -178,7 +196,6 @@ int main(int argc, char* argv[]) {
 		int value = Base->eval(Mytree);
 		cout << endl<< value << endl;
 
-		delete(Mytree);
 		/*
 		Here evaluate the current line and printout the result
 		Using the class you implemented
