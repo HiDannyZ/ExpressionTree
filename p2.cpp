@@ -86,14 +86,14 @@ class Interface{
 
 	public:
 		virtual TNode* build(string posfixList) = 0;
-		virtual int eval() = 0;
+		virtual int eval(TNode* tree) = 0;
 };
 
 class ExpressionTree : public Interface{
 
 	public:
 		TNode* build(string posfixList){
-			cout << "This is the Given Input: " << posfixList << endl;
+			//cout << "This is the Given Input: " << posfixList << endl;
 
 			//Stack
 			LinkedListStack TheStack;
@@ -110,10 +110,8 @@ class ExpressionTree : public Interface{
 			SplitedCharacter = strtok(CharCopyOfStr, " ");
 
 			while(SplitedCharacter!= NULL){
-				cout << SplitedCharacter << endl;
 
 				if((*SplitedCharacter == '+') || (*SplitedCharacter == '-') || (*SplitedCharacter == '*') || (*SplitedCharacter == '/')){
-					cout << "Popped" << endl;
 
 					TNode* rightChildNode = TheStack.pop();
 
@@ -131,7 +129,6 @@ class ExpressionTree : public Interface{
 
 				}
 				else{
-					cout << "Pushed!" << endl;
 					TNode* tempNode = new TNode;
 
 					tempNode->value = *SplitedCharacter;
@@ -147,7 +144,17 @@ class ExpressionTree : public Interface{
 
 			return PostFixTree;
 		}
-		int eval() {
+		int eval(TNode* Tree) {
+			if (Tree->left == NULL && Tree->right == NULL) {
+				return atoi(Tree->value);
+			}
+
+			eval(Tree->left);
+
+			eval(Tree->right);
+
+			cout << Tree->value << " ";
+			
 			return 0;
 		}
 };
@@ -168,7 +175,10 @@ int main(int argc, char* argv[]) {
 
 		TNode* Mytree= Base->build(input);
 
-		//delete(Mytree);
+		int value = Base->eval(Mytree);
+		cout << endl<< value << endl;
+
+		delete(Mytree);
 		/*
 		Here evaluate the current line and printout the result
 		Using the class you implemented
