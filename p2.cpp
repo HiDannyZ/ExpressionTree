@@ -185,6 +185,11 @@ int main(int argc, char* argv[]) {
 	{
 		// Here you would be reading the file line by line
 		//getline(cin, input);
+		
+		if(input.length() == 0){
+			cout << "We were given an empty Line" << endl;
+			break;
+		}
 		cout<<"The input is: "<< input << endl;
 
 		ExpressionTree Tree;
