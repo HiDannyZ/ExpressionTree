@@ -1,0 +1,12 @@
+1 + 2 * 3 + 4
+PosFix String: 1 2 3 * + 4 +
+OP Stack: 
+Op S Pop: * + +
+
+As we see a number:
+	Append it to string
+	If we see an operator:
+		Check precedence of new operator compared to the latest one in stack
+			If higher push
+			If lower, pop stack (add it to the string), and precedence check the new operator
+	at end of notation: pop everything and push it into the stack
