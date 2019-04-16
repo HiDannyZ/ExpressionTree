@@ -212,6 +212,8 @@ class PostOrder_ExpressionTree : public Interface{
 
 			while(SplitedCharacter!= NULL){
 
+				cout << *SplitedCharacter << endl;
+
 				if((*SplitedCharacter == '+') || (*SplitedCharacter == '-') || (*SplitedCharacter == '*') || (*SplitedCharacter == '/')){
 
 					//Needs to check if there's anything in the stack
@@ -289,7 +291,9 @@ class PostOrder_ExpressionTree : public Interface{
 				else{
 					postfix += *SplitedCharacter;
 				}
-		
+						//Goes to next Character
+				
+				SplitedCharacter = strtok(NULL, " ");
 			}
 		}
 
