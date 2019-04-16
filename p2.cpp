@@ -104,7 +104,7 @@ class PostOrder_ExpressionTree : public Interface{
 
 			//By Changing CharCopyOfStr[1024] to this one, There is no longer an error. Why? Was it because of Stackoverflow due to large allocation of size?
 			// Can I delete This Once I'm done with it then? Though, online says that Delete should only be used with New and char *, not just char. Thanks!
-			char CharCopyOfStr[posfixList.length()];
+			char CharCopyOfStr[List.length()];
 			
 			strcpy(CharCopyOfStr, List.c_str());
 
@@ -202,6 +202,10 @@ class PostOrder_ExpressionTree : public Interface{
 			LinkedListStack operatorStack;
 			std::string postfix;
 
+			char CharCopyOfStr[infix.length()];
+			
+			strcpy(CharCopyOfStr, infix.c_str());
+
 			char* SplitedCharacter;
 
 			SplitedCharacter = strtok(CharCopyOfStr, " ");
@@ -210,76 +214,91 @@ class PostOrder_ExpressionTree : public Interface{
 
 				if((*SplitedCharacter == '+') || (*SplitedCharacter == '-') || (*SplitedCharacter == '*') || (*SplitedCharacter == '/')){
 
+					//Needs to check if there's anything in the stack
+					//If not just automatically push the operator into it
 					if(operatorStack.topOfStack == NULL){
 
 						TNode* opNode = new TNode;
 						opNode->value = *SplitedCharacter;
-						operatorStack.push(*opNode);
+						operatorStack.push(opNode);
 
 					}
-
-					if(precedenceCheck(*SplitedCharacter) > precedenceCheck(operatorStack.topOfStack->value)){
-						TNode* opNode = new TNode;
-						opNode->value = *SplitedCharacter;
-						operatorStack.push(*opNode);
-					}
-
-					else if( precedenceCheck(*SplitedCharacter) < precedenceCheck(operatorStack.topOfStack->value)){
-						postfix.append(operatorStack.pop()->value);
-						
-						if(operatorStack.topOfStack == NULL){
-
-							TNode* opNode = new TNode;
-							opNode->value = *SplitedCharacter;
-							operatorStack.push(*opNode);
-
-						}
-
-						if(precedenceCheck(*SplitedCharacter) > precedenceCheck(operatorStack.topOfStack->value)){
-							TNode* opNode = new TNode;
-							opNode->value = *SplitedCharacter;
-							operatorStack.push(*opNode);
-						}
-
-						else if( precedenceCheck(*SplitedCharacter) < precedenceCheck(operatorStack.topOfStack->value)){
-							postfix.append(operatorStack.pop()->value);
-							
-						}
-
-						//case when they're equal
-						else{
-							postfix.append(operatorStack.pop()->value);
-							TNode* opNode = new TNode;
-							opNode->value = *SplitedCharacter;
-							operatorStack.push(*opNode);
-						}
-					}
-
-					//case when they're equal
 					else{
-						postfix.append(operatorStack.pop()->value);
-						TNode* opNode = new TNode;
-						opNode->value = *SplitedCharacter;
-						operatorStack.push(*opNode);
+
+						//Just a temp for the top of the stack
+						TNode* topNode = operatorStack.topOfStack ->subTree;
+
+
+						//Chcking to see if incoming operator's precedence is greater than the top of stack's
+						//If it is add to the stack
+						if(precedenceCheck(*SplitedCharacter) > precedenceCheck(topNode->value)){
+							TNode* opNode = new TNode;
+							opNode->value = *SplitedCharacter;
+							operatorStack.push(opNode);
+						}
+
+						//If the incoming ooperator precedence is less than the top of stack one
+						//Pop stack and append the operator to string, run the whole precedence check operatation again
+						//This only going to happen at most 2 times
+						else if(precedenceCheck(*SplitedCharacter) < precedenceCheck(topNode->value)){
+
+							TNode* temp = operatorStack.pop();
+							postfix += temp->value;
+		
+
+							//rerunning the precedence check for the new topOfStack
+							if(operatorStack.topOfStack == NULL){
+
+								TNode* opNode = new TNode;
+								opNode->value = *SplitedCharacter;
+								operatorStack.push(opNode);
+
+							}
+							else{
+
+								//Just a temp for the top of the stack
+								TNode* topNode = operatorStack.topOfStack ->subTree;
+								
+								if(precedenceCheck(*SplitedCharacter) > precedenceCheck(topNode->value)){
+									TNode* opNode = new TNode;
+									opNode->value = *SplitedCharacter;
+									operatorStack.push(opNode);
+								}
+
+								else{
+									TNode* temp = operatorStack.pop();
+									postfix += temp->value;
+									TNode* opNode = new TNode;
+									opNode->value = *SplitedCharacter;
+									operatorStack.push(opNode);
+								}
+
+							}
 					}
-
-
-
+						//case when they're equal in precedence: pop the top of the stack, add it to string and push new op
+						else{
+							TNode* temp = operatorStack.pop();
+							postfix += temp->value;
+							TNode* opNode = new TNode;
+							opNode->value = *SplitedCharacter;
+							operatorStack.push(opNode);
+						}
+					}
 				}
 
 				else{
-					postfix.append(*SplitedCharacter)
+					postfix += *SplitedCharacter;
 				}
 		
 			}
 		}
 
-		int precedenceCheck(char* op){
+		int precedenceCheck(char op){
 
-			if(*op == '+' || *op == '-'){
+			if(op == '+' || op == '-'){
 				return 1;
 			}
-			if(*op == '*' || *op == '/'){
+			if(op == '*' || op == '/'){
 				return 2;
 			}
 		}
@@ -302,10 +321,20 @@ int main(int argc, char* argv[]) {
 			break;
 		}
 		cout<<"The input is: "<< input << endl;
+		cout << input[input.length()-1]<< endl;
 
+		//Predefine the Tree
 		PostOrder_ExpressionTree Tree;
-
 		Interface *Base = &Tree;
+
+		//check to see if the input is in infix notation: if in infix notation, change it to postfix then eval
+		bool isInfix = false;
+		if (input[input.length()-1] != '+' &&  input[input.length()-1] != '-' && input[input.length()-1] != '*' && input[input.length()-1] != '/'){
+			isInfix = true;
+			input = Tree.toPostfix(input);
+			cout << input << endl;
+		}
+		
 
 		TNode* Mytree= Base->build(input);
 
