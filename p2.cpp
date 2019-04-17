@@ -149,7 +149,7 @@ class PostOrder_ExpressionTree : public Interface{
 			return PostFixTree;
 		}
 
-		int eval(TNode* Tree) {
+		float eval(TNode* Tree) {
 			if (Tree == NULL){
 				return 0;
 			}
@@ -201,8 +201,8 @@ class PostOrder_ExpressionTree : public Interface{
 
 			LinkedListStack operatorStack;
 			std::string postfix;
-			cout << operatorStack.topOfStack << endl;
 
+			operatorStack.topOfStack = NULL;
 			char CharCopyOfStr[infix.length()];
 			
 			strcpy(CharCopyOfStr, infix.c_str());
@@ -213,23 +213,17 @@ class PostOrder_ExpressionTree : public Interface{
 
 			while(SplitedCharacter!= NULL){
 
-				cout << *SplitedCharacter << endl;
-
 				if((*SplitedCharacter == '+') || (*SplitedCharacter == '-') || (*SplitedCharacter == '*') || (*SplitedCharacter == '/')){
 
-					cout << operatorStack.topOfStack << endl;
 					//Needs to check if there's anything in the stack
 					//If not just automatically push the operator into it
 					if(operatorStack.topOfStack == NULL){
-						cout <<"Here" << endl; 
 						TNode* opNode = new TNode;
 						opNode->value = *SplitedCharacter;
 						operatorStack.push(opNode);
 
 					}
 					else{
-
-						cout <<"1Here" << endl; 
 						//Just a temp for the top of the stack
 						TNode* topNode = operatorStack.topOfStack ->subTree;
 
@@ -249,6 +243,7 @@ class PostOrder_ExpressionTree : public Interface{
 
 							TNode* temp = operatorStack.pop();
 							postfix += temp->value;
+							postfix += " ";
 		
 
 							//rerunning the precedence check for the new topOfStack
@@ -273,6 +268,7 @@ class PostOrder_ExpressionTree : public Interface{
 								else{
 									TNode* temp = operatorStack.pop();
 									postfix += temp->value;
+									postfix += " ";
 									TNode* opNode = new TNode;
 									opNode->value = *SplitedCharacter;
 									operatorStack.push(opNode);
@@ -284,6 +280,7 @@ class PostOrder_ExpressionTree : public Interface{
 						else{
 							TNode* temp = operatorStack.pop();
 							postfix += temp->value;
+							postfix += " ";
 							TNode* opNode = new TNode;
 							opNode->value = *SplitedCharacter;
 							operatorStack.push(opNode);
@@ -293,11 +290,19 @@ class PostOrder_ExpressionTree : public Interface{
 
 				else{
 					postfix += *SplitedCharacter;
+					postfix += " ";
 				}
 						//Goes to next Character
-
 				SplitedCharacter = strtok(NULL, " ");
 			}
+
+			while(operatorStack.topOfStack != NULL){
+				TNode* temp = operatorStack.pop();
+				postfix += temp->value ;
+				postfix += " ";
+			}
+
+			return postfix;
 		}
 
 		int precedenceCheck(char op){
@@ -337,17 +342,20 @@ int main(int argc, char* argv[]) {
 		if (input[input.length()-1] != '+' &&  input[input.length()-1] != '-' && input[input.length()-1] != '*' && input[input.length()-1] != '/'){
 			isInfix = true;
 			input = Tree.toPostfix(input);
-			cout << input << endl;
 		}
-		
 
 		TNode* Mytree= Base->build(input);
 
-		cout<< "The inorder traversal is: ";
-		Base->printExpression(Mytree);
-		cout << endl;
+		if (isInfix){
+			cout << "The postorder traversal is: " << input << endl;
+		}
+		else{
+			cout<< "The inorder traversal is: ";
+			Base->printExpression(Mytree);
+			cout << endl;
+		}
 
-		int value = Base->eval(Mytree);
+		float value = Base->eval(Mytree);
 		cout << "The output of the expression is: "<< value << endl << endl;
 
 		/*
