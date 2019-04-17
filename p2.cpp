@@ -201,6 +201,7 @@ class PostOrder_ExpressionTree : public Interface{
 
 			LinkedListStack operatorStack;
 			std::string postfix;
+			cout << operatorStack.topOfStack << endl;
 
 			char CharCopyOfStr[infix.length()];
 			
@@ -216,10 +217,11 @@ class PostOrder_ExpressionTree : public Interface{
 
 				if((*SplitedCharacter == '+') || (*SplitedCharacter == '-') || (*SplitedCharacter == '*') || (*SplitedCharacter == '/')){
 
+					cout << operatorStack.topOfStack << endl;
 					//Needs to check if there's anything in the stack
 					//If not just automatically push the operator into it
 					if(operatorStack.topOfStack == NULL){
-
+						cout <<"Here" << endl; 
 						TNode* opNode = new TNode;
 						opNode->value = *SplitedCharacter;
 						operatorStack.push(opNode);
@@ -227,6 +229,7 @@ class PostOrder_ExpressionTree : public Interface{
 					}
 					else{
 
+						cout <<"1Here" << endl; 
 						//Just a temp for the top of the stack
 						TNode* topNode = operatorStack.topOfStack ->subTree;
 
@@ -292,7 +295,7 @@ class PostOrder_ExpressionTree : public Interface{
 					postfix += *SplitedCharacter;
 				}
 						//Goes to next Character
-				
+
 				SplitedCharacter = strtok(NULL, " ");
 			}
 		}
@@ -325,8 +328,6 @@ int main(int argc, char* argv[]) {
 			break;
 		}
 		cout<<"The input is: "<< input << endl;
-		cout << input[input.length()-1]<< endl;
-
 		//Predefine the Tree
 		PostOrder_ExpressionTree Tree;
 		Interface *Base = &Tree;
