@@ -24,7 +24,7 @@ class LinkedListStack
 	//Constructor
 	LinkedListStack() {
 		SNode* topOfStack = NULL;
-		int size = 0;
+
 	}
 	//Deconstructor
 	//~LinkedListStack() {
@@ -42,8 +42,6 @@ class LinkedListStack
 			//Sets New Top of Stack as Most Recent Pushed in Node
 			topOfStack = newNode;
 
-			//Increment size of Stack
-			size++;
 
 		}
 		TNode* pop() {
@@ -62,8 +60,6 @@ class LinkedListStack
 
 				topOfStack = topOfStack -> next;
 
-				//Decrease Size of Stack
-				size--;
 				return tempNode;
 			}
 			else {
@@ -75,7 +71,6 @@ class LinkedListStack
 		}
 	private:
 		SNode* topOfStack;
-		int size;
 
 		//Allows This Class to be used in Expression Tree
 		friend class PostOrder_ExpressionTree;
@@ -156,12 +151,12 @@ class PostOrder_ExpressionTree : public Interface{
 
 			if (((Tree->left) == NULL) && ((Tree->right) == NULL)) {
 
-				return ((int) Tree->value - ((int)48));
+				return ((float) Tree->value - ((float)48));
 			}
 
-			int leftVal = eval(Tree->left);
+			float leftVal = eval(Tree->left);
 
-			int rightVal = eval(Tree->right);
+			float rightVal = eval(Tree->right);
 
 			// cout << Tree->value << " ";
 			
