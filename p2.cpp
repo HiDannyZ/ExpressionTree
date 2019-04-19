@@ -87,7 +87,7 @@ class Interface{
 
 	public:
 		virtual TNode* build(string List) = 0;
-		virtual int eval(TNode* tree) = 0;
+		virtual float eval(TNode* tree) = 0;
 		virtual void printExpression(TNode* tree) = 0;
 
 };
@@ -344,7 +344,7 @@ int main(int argc, char* argv[]) {
 			input = Tree.toPostfix(input);
 		}
 
-		TNode* Mytree= Base->build(input);
+		TNode* Mytree= Tree.build(input);
 
 		if (isInfix){
 			cout << "The postorder traversal is: " << input << endl;
@@ -355,8 +355,9 @@ int main(int argc, char* argv[]) {
 			cout << endl;
 		}
 
-		float value = Base->eval(Mytree);
+		float value = Tree.eval(Mytree);
 		cout << "The output of the expression is: "<< value << endl << endl;
+
 
 		/*
 		Here evaluate the current line and printout the result
