@@ -8,7 +8,7 @@ using namespace std;
 
 
 struct TNode {
-	char value;
+	string value;
 	TNode* right;
 	TNode* left;
 };
@@ -107,7 +107,11 @@ class PostOrder_ExpressionTree : public Interface{
 
 			SplitedCharacter = strtok(CharCopyOfStr, " ");
 
+			string stringChar (SplitedCharacter);
+
 			while(SplitedCharacter!= NULL){
+				stringChar = SplitedCharacter;
+				cout <<stringChar << endl; 
 
 				if((*SplitedCharacter == '+') || (*SplitedCharacter == '-') || (*SplitedCharacter == '*') || (*SplitedCharacter == '/')){
 
@@ -117,7 +121,7 @@ class PostOrder_ExpressionTree : public Interface{
 
 					TNode* rootNode = new TNode;
 
-					rootNode->value = *SplitedCharacter;
+					rootNode->value = stringChar;
 
 					rootNode->right = rightChildNode;
 					rootNode->left = leftChildNode;
@@ -129,7 +133,7 @@ class PostOrder_ExpressionTree : public Interface{
 				else{
 					TNode* tempNode = new TNode;
 
-					tempNode->value = *SplitedCharacter;
+					tempNode->value = stringChar;
 
 					TheStack.push(tempNode);
 					
@@ -151,7 +155,7 @@ class PostOrder_ExpressionTree : public Interface{
 
 			if (((Tree->left) == NULL) && ((Tree->right) == NULL)) {
 
-				return ((float) Tree->value - ((float)48));
+				return (stof(Tree->value));
 			}
 
 			float leftVal = eval(Tree->left);
@@ -159,20 +163,24 @@ class PostOrder_ExpressionTree : public Interface{
 			float rightVal = eval(Tree->right);
 
 			// cout << Tree->value << " ";
-			
-			if ((Tree->value) == '+'){
+			string plus ("+");
+			string minus ("-");
+			string mult ("*");
+			string div ("/");
+
+			if ((Tree->value) == plus){
 				return leftVal + rightVal;
 			}
 			
-			if (Tree->value == '-'){
+			if (Tree->value == minus){
 				return leftVal - rightVal;
 			}
 			
-			if (Tree->value == '*'){
+			if (Tree->value == mult){
 				return leftVal * rightVal;
 			}
 
-			if (Tree->value == '/'){
+			if (Tree->value == div){
 				return leftVal / rightVal;
 			}
 
@@ -191,7 +199,7 @@ class PostOrder_ExpressionTree : public Interface{
 			printExpression(Tree->right);
 
 		}
-
+/*
 		string toPostfix(string infix){
 
 			LinkedListStack operatorStack;
@@ -309,6 +317,7 @@ class PostOrder_ExpressionTree : public Interface{
 				return 2;
 			}
 		}
+		*/
 };
 
 
@@ -334,22 +343,22 @@ int main(int argc, char* argv[]) {
 
 		//check to see if the input is in infix notation: if in infix notation, change it to postfix then eval
 		bool isInfix = false;
-		if (input[input.length()-1] != '+' &&  input[input.length()-1] != '-' && input[input.length()-1] != '*' && input[input.length()-1] != '/'){
+/*		if (input[input.length()-1] != '+' &&  input[input.length()-1] != '-' && input[input.length()-1] != '*' && input[input.length()-1] != '/'){
 			isInfix = true;
 			input = Tree.toPostfix(input);
 		}
-
+*/
 		TNode* Mytree= Tree.build(input);
 
 		if (isInfix){
 			cout << "The postorder traversal is: " << input << endl;
 		}
-		else{
+/*		else{
 			cout<< "The inorder traversal is: ";
 			Base->printExpression(Mytree);
 			cout << endl;
 		}
-
+*/
 		float value = Tree.eval(Mytree);
 		cout << "The output of the expression is: "<< value << endl << endl;
 
