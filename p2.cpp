@@ -111,7 +111,6 @@ class PostOrder_ExpressionTree : public Interface{
 
 			while(SplitedCharacter!= NULL){
 				stringChar = SplitedCharacter;
-				cout <<stringChar << endl; 
 
 				if((*SplitedCharacter == '+') || (*SplitedCharacter == '-') || (*SplitedCharacter == '*') || (*SplitedCharacter == '/')){
 
@@ -199,7 +198,7 @@ class PostOrder_ExpressionTree : public Interface{
 			printExpression(Tree->right);
 
 		}
-/*
+
 		string toPostfix(string infix){
 
 			LinkedListStack operatorStack;
@@ -213,8 +212,10 @@ class PostOrder_ExpressionTree : public Interface{
 			char* SplitedCharacter;
 
 			SplitedCharacter = strtok(CharCopyOfStr, " ");
-
+			string stringChar (SplitedCharacter);
+			
 			while(SplitedCharacter!= NULL){
+				stringChar = SplitedCharacter;
 
 				if((*SplitedCharacter == '+') || (*SplitedCharacter == '-') || (*SplitedCharacter == '*') || (*SplitedCharacter == '/')){
 
@@ -222,7 +223,7 @@ class PostOrder_ExpressionTree : public Interface{
 					//If not just automatically push the operator into it
 					if(operatorStack.topOfStack == NULL){
 						TNode* opNode = new TNode;
-						opNode->value = *SplitedCharacter;
+						opNode->value = stringChar;
 						operatorStack.push(opNode);
 
 					}
@@ -233,16 +234,16 @@ class PostOrder_ExpressionTree : public Interface{
 
 						//Chcking to see if incoming operator's precedence is greater than the top of stack's
 						//If it is add to the stack
-						if(precedenceCheck(*SplitedCharacter) > precedenceCheck(topNode->value)){
+						if(precedenceCheck(stringChar) > precedenceCheck(topNode->value)){
 							TNode* opNode = new TNode;
-							opNode->value = *SplitedCharacter;
+							opNode->value = stringChar;
 							operatorStack.push(opNode);
 						}
 
 						//If the incoming ooperator precedence is less than the top of stack one
 						//Pop stack and append the operator to string, run the whole precedence check operatation again
 						//This only going to happen at most 2 times
-						else if(precedenceCheck(*SplitedCharacter) < precedenceCheck(topNode->value)){
+						else if(precedenceCheck(stringChar) < precedenceCheck(topNode->value)){
 
 							TNode* temp = operatorStack.pop();
 							postfix += temp->value;
@@ -253,7 +254,7 @@ class PostOrder_ExpressionTree : public Interface{
 							if(operatorStack.topOfStack == NULL){
 
 								TNode* opNode = new TNode;
-								opNode->value = *SplitedCharacter;
+								opNode->value = stringChar;
 								operatorStack.push(opNode);
 
 							}
@@ -262,9 +263,9 @@ class PostOrder_ExpressionTree : public Interface{
 								//Just a temp for the top of the stack
 								TNode* topNode = operatorStack.topOfStack ->subTree;
 								
-								if(precedenceCheck(*SplitedCharacter) > precedenceCheck(topNode->value)){
+								if(precedenceCheck(stringChar) > precedenceCheck(topNode->value)){
 									TNode* opNode = new TNode;
-									opNode->value = *SplitedCharacter;
+									opNode->value = stringChar;
 									operatorStack.push(opNode);
 								}
 
@@ -273,7 +274,7 @@ class PostOrder_ExpressionTree : public Interface{
 									postfix += temp->value;
 									postfix += " ";
 									TNode* opNode = new TNode;
-									opNode->value = *SplitedCharacter;
+									opNode->value = stringChar;
 									operatorStack.push(opNode);
 								}
 
@@ -285,14 +286,14 @@ class PostOrder_ExpressionTree : public Interface{
 							postfix += temp->value;
 							postfix += " ";
 							TNode* opNode = new TNode;
-							opNode->value = *SplitedCharacter;
+							opNode->value = stringChar;
 							operatorStack.push(opNode);
 						}
 					}
 				}
 
 				else{
-					postfix += *SplitedCharacter;
+					postfix += stringChar;
 					postfix += " ";
 				}
 						//Goes to next Character
@@ -308,16 +309,19 @@ class PostOrder_ExpressionTree : public Interface{
 			return postfix;
 		}
 
-		int precedenceCheck(char op){
+		int precedenceCheck(string op){
+			string plus ("+");
+			string minus ("-");
+			string mult ("*");
+			string div ("/");
 
-			if(op == '+' || op == '-'){
+			if(op == plus || op == minus){
 				return 1;
 			}
-			if(op == '*' || op == '/'){
+			if(op == mult || op == div){
 				return 2;
 			}
 		}
-		*/
 };
 
 
@@ -343,22 +347,22 @@ int main(int argc, char* argv[]) {
 
 		//check to see if the input is in infix notation: if in infix notation, change it to postfix then eval
 		bool isInfix = false;
-/*		if (input[input.length()-1] != '+' &&  input[input.length()-1] != '-' && input[input.length()-1] != '*' && input[input.length()-1] != '/'){
+		if (input[input.length()-1] != '+' &&  input[input.length()-1] != '-' && input[input.length()-1] != '*' && input[input.length()-1] != '/'){
 			isInfix = true;
 			input = Tree.toPostfix(input);
 		}
-*/
+
 		TNode* Mytree= Tree.build(input);
 
 		if (isInfix){
 			cout << "The postorder traversal is: " << input << endl;
 		}
-/*		else{
+		else{
 			cout<< "The inorder traversal is: ";
 			Base->printExpression(Mytree);
 			cout << endl;
 		}
-*/
+
 		float value = Tree.eval(Mytree);
 		cout << "The output of the expression is: "<< value << endl << endl;
 
