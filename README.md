@@ -12,7 +12,7 @@ tokens. https://linux.die.net/man/3/strtok
 5) You can use built-in functions like string manipulation functions. You should
 not use built-in types (C++ STL) for vector, stack, lists and trees.
 
-# Danny Ideas:
+# Ideas:
 
 Create A nodeStack class
 
