@@ -24,8 +24,6 @@ Create everything in p2.cpp
 
 3.) Push created Node into stack
 
-//Not sure if we can push a node to stack as Stack may not support that. Instead, we can probably just pass a pointer
-
 4.) Then start search again until end of string.
 
 5.) Repeat 1,2,3, setting Node as right child always. 
